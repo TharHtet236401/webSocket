@@ -1,43 +1,38 @@
-//These are modules required
 const express = require('express');
-const { createServer } = require('node:http');
-const { join } = require('node:path');
+const { createServer } = require('http');
+const { join } = require('path');
 const { Server } = require('socket.io');
 
-//These are the instances
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-//send the index file with file location
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, 'index.html'));
 });
 
-// open connection with the client side
 io.on('connection', (socket) => {
-  console.log("user connected");
+  console.log('User connected');
+
+  // Broadcast to all clients that a new user has connected
+  io.emit('chat message', 'User connected');
 
   // Listening for 'chat message' events from clients
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg);
-    // Broadcasting the received message to all connected clients
+    // Broadcast the received message to all connected clients
     io.emit('chat message', msg);
   });
 
+  // Handle user disconnection
   socket.on('disconnect', () => {
-    console.log('user disconnected');
-    io.emit('chat message', 'User disconnected'); // Broadcast disconnect message to all clients
+    console.log('User disconnected');
+    // Broadcast to all clients that a user has disconnected
+    io.emit('chat message', 'User disconnected');
   });
 
- 
 });
 
-
-
-
-
-//server starts
 server.listen(3000, () => {
-  console.log('server running at http://localhost:3000');
+  console.log('Server running at http://localhost:3000');
 });
