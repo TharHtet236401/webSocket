@@ -25,9 +25,12 @@ io.on('connection', (socket) => {
     io.emit('chat message', msg);
   });
 
-  
- 
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+    io.emit('chat message', 'User disconnected'); // Broadcast disconnect message to all clients
+  });
 
+ 
 });
 
 
