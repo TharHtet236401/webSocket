@@ -60,7 +60,6 @@
   </head>
   <body>
     <ul id="messages"></ul>
-    
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
@@ -72,6 +71,11 @@
       var messages = document.getElementById('messages');
       var form = document.getElementById('form');
       var input = document.getElementById('input');
+
+      var nickname = prompt("Please enter your nickname");
+      if (nickname) {
+        socket.emit('set nickname', nickname);
+      }
 
       //delivering the input from the from and emit it
       form.addEventListener('submit', function(e) {

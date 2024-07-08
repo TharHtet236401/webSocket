@@ -14,8 +14,11 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('User connected');
 
-  // Broadcast to all clients that a new user has connected
-  io.emit('chat message', 'User connected');
+  // // Broadcast to all clients that a new user has connected
+  // io.emit('chat message', 'User connected');
+
+  // Broadcast to all clients except the sender;
+  socket.broadcast.emit("chat message", "User connected");
 
   // Listening for 'chat message' events from clients
   socket.on('chat message', (msg) => {
@@ -30,6 +33,16 @@ io.on('connection', (socket) => {
     // Broadcast to all clients that a user has disconnected
     io.emit('chat message', 'User disconnected');
   });
+
+    // Temporarily store the nickname
+    let nickname = 'Anonymous';
+
+    // Listen for 'set nickname' event to get the user's nickname
+    socket.on('set nickname', (name) => {
+      nickname = name;
+      socket.broadcast.emit('chat message', `${nickname} connected`);
+      console.log(nickname);
+    });
 
 });
 
