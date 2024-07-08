@@ -9,6 +9,8 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+var hello = "world";
+
 //send the index file with file location
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, 'index.html'));
