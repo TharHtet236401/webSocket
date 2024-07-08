@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
   // io.emit('chat message', 'User connected');
 
   // Broadcast to all clients except the sender;
-  socket.broadcast.emit("chat message", "User connected");
+  socket.broadcast.emit("chat message");
 
   // Listening for 'chat message' events from clients
   socket.on('chat message', (msg) => {
@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User disconnected');
     // Broadcast to all clients that a user has disconnected
-    io.emit('chat message', 'User disconnected');
+    io.emit('chat message', `${nickname} disconnected`);
   });
 
     // Temporarily store the nickname
